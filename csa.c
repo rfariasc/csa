@@ -12,17 +12,12 @@ int main(int argc, char **argv){
     pid_t pid;
     int pfd[2];
     int i, status;
+
+    int ganancia = 3;  //TODO cambiar cuando se termine la tarea
+
     FILE * sd;
 
-    FILE *audio_file;
-    short int buffer[1];
-
-//    audio_file=fopen(argv[1],"r");
-    audio_file=fopen("SaludoAudacity.raw","r");
-    if(audio_file==NULL){
-        printf("ERROR ABRIENDO ARCHIVO\n");
-        return 1;
-    }
+//    original_file=fopen(argv[1],"r");  //TODO cambiar cuando se termine la tarea
 
     /*
      * Create a pipe.
@@ -64,28 +59,27 @@ int main(int argc, char **argv){
      */
     close(pfd[0]);
     sd = fdopen(pfd[1], "w");  /* to use fprintf instead of just write */
-    fprintf(sd, "x= [");
-    while(!feof(audio_file)){
-        fread(buffer, sizeof(short), 1, audio_file);
-        fprintf(sd, "%d ", buffer[0]);
-//        printf("%d\n", buffer[0]); 
-    }
-    fprintf(sd, "];\n");fflush(sd);
 
-    fprintf(sd, "y= 0:(1/%d):((columns(x)-1)/%d)\n", freq, freq);fflush(sd);
+    //TODO falta arreglar lo de los 40ms, pero se deja para al final mejor, creo
 
-    fprintf(sd, "plot(y,x);\n"); fflush(sd);
+//    fprintf(sd, "];\n");fflush(sd);
 
-//    fprintf(sd,"columns(x)\n");fflush(sd);
-//    fprintf(sd,"columns(y)\n");fflush(sd);
-//    fprintf(sd,"x(1)\n");fflush(sd);
-//    fprintf(sd,"y(1)\n");fflush(sd);
-//    fprintf(sd,"x(columns(x))\n");fflush(sd);
-//    fprintf(sd,"y(columns(y))\n");fflush(sd);
+    fprintf(sd, "original=loadaudio('SaludoAudacity','raw',16)\n"); fflush(sd);
+    fprintf(sd, "y= 0:(1/%d):((rows(original)-1)/%d)\n", freq, freq);fflush(sd);
 
-    sleep(20);
+    fprintf(sd, "subplot(2,1,1);\n"); fflush(sd);
+    fprintf(sd, "plot(y,original);\n"); fflush(sd);
+    
+    fprintf(sd, "amplificado = int16(original*%d)\n", ganancia); fflush(sd);
+    fprintf(sd, "saveaudio('amplificado',amplificado,'raw',16)\n"); fflush(sd);
+
+    fprintf(sd, "subplot(2,1,2);\n"); fflush(sd);
+    fprintf(sd, "plot(y,amplificado);\n"); fflush(sd);
+
+
+    printf("ENTER para continuar");
+    getchar(); 
     fprintf(sd, "\n exit\n"); fflush(sd);
-
 
     /*
      * Wait for the child to exit and
@@ -94,14 +88,10 @@ int main(int argc, char **argv){
     waitpid(pid, &status, 0);
     fclose(sd);
 
-    fclose(audio_file); //cerrar archivo io
     /*
      * Exit with a status of 0, indicating that
      * everything went fine.
      */
     exit(0);
-
-
-    return 0;
-
+ //   return 0;
 }
