@@ -13,10 +13,10 @@ Si el parámetro p es ingresado, csa reproduce el archivo de audio original comp
 
 #Descripción
 csa muestra tres gráficos de 40 [ms] desde el tiempo especificado por offset respecto del inicio del archivo: 
-    *El primer gráfico muestra el segmento de señal de audio original, 
-    *El segundo muestra el segmento de la señal saturada, y 
-    *El tercero el segmento de la señal corregida.  
-    *El cuarto, muestra el error para la correción hecha al archivo.(1)
+* El primer gráfico muestra el segmento de señal de audio original, 
+* El segundo muestra el segmento de la señal saturada, y 
+* El tercero el segmento de la señal corregida.  
+* El cuarto, muestra el error para la correción hecha al archivo. [][id]
 
 csa termina cuando el usuario presiona cualquier tecla.
 
