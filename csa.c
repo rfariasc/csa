@@ -39,6 +39,7 @@ int main(int argc, char **argv){
     temp = malloc(sizeof(path));
     strcpy(temp,full_name);
     strcpy(filename ,strtok(temp, "."));
+    printf("%s\n",filename );
     free(temp);
 
     pid = octave_aplay(pfd, NULL);
@@ -47,17 +48,22 @@ int main(int argc, char **argv){
 
     //TODO falta arreglar lo de los 40ms, pero se deja para al final mejor, creo
     //TODO en Octave se pone solo el nombre del archivo, sin extensión... hay que arreglar eso...
+    fprintf(sd, "test(1)\n");fflush(sd);
     fprintf(sd, "original=loadaudio('%s','raw',16)\n", filename); fflush(sd);
     fprintf(sd, "y= 0:(1/%d):((rows(original)-1)/%d)\n", freq, freq);fflush(sd);
 
-    fprintf(sd, "subplot(3,1,1);\n"); //fflush(sd);
+    fprintf(sd, "subplot(2,1,1);\n"); //fflush(sd);
     fprintf(sd, "plot(y,original);\n"); fflush(sd);
     
     fprintf(sd, "amplificado = int16(original*%d)\n", ganancia); fflush(sd);
     fprintf(sd, "saveaudio('amplificado',amplificado,'raw',16)\n"); fflush(sd);
-
-    fprintf(sd, "subplot(3,1,2);\n"); //fflush(sd);
+    fprintf(sd, "amplificado = loadaudio('amplificado','raw',16)\n");fflush(sd);
+    fprintf(sd, "subplot(2,1,2);\n"); //fflush(sd);
     fprintf(sd, "plot(y,amplificado);\n"); fflush(sd);
+    fprintf(sd, "figure(2)\n");fflush(sd);
+    fprintf(sd, "filtrado = elo330(amplificado);\n"); fflush(sd);
+    fprintf(sd, "saveaudio('filtrado',filtrado,'raw',16)\n"); fflush(sd);
+    fprintf(sd, "plot(y,filtrado)\n");fflush(sd);
 
 
     if(p==1){       //si es que se pone la bandera P
