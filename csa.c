@@ -68,6 +68,7 @@ int main(int argc, char **argv){
     fprintf(sd, "filtrado = elo330(amplificado);\n"); fflush(sd);
     fprintf(sd, "saveaudio('filtrado',filtrado,'raw',16)\n"); fflush(sd);
     fprintf(sd, "plot(y(%d:%d),filtrado(%d:%d))\n",win_left,win_right,win_left,win_right);fflush(sd);
+    fprintf(sd, , "%s\n", );
 
 
     if(p==1){       //si es que se pone la bandera P
