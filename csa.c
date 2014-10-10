@@ -22,7 +22,8 @@ int main(int argc, char **argv){
 //////SIMULACIÓN ARGUMENTOS/////////
     int p=1;
     char path[100] = "SaludoAudacity.raw";    //argv[1] se supone que es la ruta del archivo
-    int ganancia = 3; 
+    int ganancia = 3;
+    int offset = 200; 
 ////////////////////////////////////
 
     char full_name[(int) sizeof(path)];
@@ -48,22 +49,25 @@ int main(int argc, char **argv){
 
     //TODO falta arreglar lo de los 40ms, pero se deja para al final mejor, creo
     //TODO en Octave se pone solo el nombre del archivo, sin extensión... hay que arreglar eso...
+    int win_left = offset*8;
+    int win_right = win_left+320;
+
     fprintf(sd, "test(1)\n");fflush(sd);
     fprintf(sd, "original=loadaudio('%s','raw',16)\n", filename); fflush(sd);
     fprintf(sd, "y= 0:(1/%d):((rows(original)-1)/%d)\n", freq, freq);fflush(sd);
 
     fprintf(sd, "subplot(2,1,1);\n"); //fflush(sd);
-    fprintf(sd, "plot(y,original);\n"); fflush(sd);
+    fprintf(sd, "plot(y(%d:%d),original(%d:%d));\n",win_left,win_right,win_left,win_right); fflush(sd);
     
     fprintf(sd, "amplificado = int16(original*%d)\n", ganancia); fflush(sd);
     fprintf(sd, "saveaudio('amplificado',amplificado,'raw',16)\n"); fflush(sd);
     fprintf(sd, "amplificado = loadaudio('amplificado','raw',16)\n");fflush(sd);
     fprintf(sd, "subplot(2,1,2);\n"); //fflush(sd);
-    fprintf(sd, "plot(y,amplificado);\n"); fflush(sd);
+    fprintf(sd, "plot(y(%d:%d),amplificado(%d:%d));\n",win_left,win_right,win_left,win_right); fflush(sd);
     fprintf(sd, "figure(2)\n");fflush(sd);
     fprintf(sd, "filtrado = elo330(amplificado);\n"); fflush(sd);
     fprintf(sd, "saveaudio('filtrado',filtrado,'raw',16)\n"); fflush(sd);
-    fprintf(sd, "plot(y,filtrado)\n");fflush(sd);
+    fprintf(sd, "plot(y(%d:%d),filtrado(%d:%d))\n",win_left,win_right,win_left,win_right);fflush(sd);
 
 
     if(p==1){       //si es que se pone la bandera P
