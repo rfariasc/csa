@@ -11,7 +11,7 @@
 
 pid_t octave_aplay(int *pfd, char *path);
 
-int main(int argc, char **argv){
+int main(int argc, char *argv[]){
 
     pid_t pid, pid2;
     int pfd[2];
@@ -20,10 +20,20 @@ int main(int argc, char **argv){
     
 
 //////SIMULACIÓN ARGUMENTOS/////////
-    int p=1;
-    char path[100] = "SaludoAudacity.raw";    //argv[1] se supone que es la ruta del archivo
-    int ganancia = 100;
-    int offset = 200; 
+    int p=0;
+
+    char* path = argv[1];    //argv[1] se supone que es la ruta del archivo
+    int ganancia = atoi(argv[2]);
+    int offset = atoi(argv[3]); 
+
+    if (argc == 5)
+    {
+        if (strcmp(argv[4],"-p") == 0)
+        {
+            printf("Entre\n");
+            p = 1;
+        }
+    }
 ////////////////////////////////////
 
     char full_name[(int) sizeof(path)];
@@ -41,7 +51,7 @@ int main(int argc, char **argv){
     strcpy(temp,full_name);
     strcpy(filename ,strtok(temp, "."));
     printf("%s\n",filename );
-    free(temp);
+    //free(temp);
 
     pid = octave_aplay(pfd, NULL);
 
@@ -101,8 +111,8 @@ int main(int argc, char **argv){
     if (tmp) {
         while (fscanf(tmp, "%s", str)!=EOF)
             printf(" el error es:%s",str);
-    fclose(tmp);
-}
+        fclose(tmp);
+    }
 
     return 0;
 }
