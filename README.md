@@ -29,5 +29,6 @@ NOTA: Si bien los gráficos muestran solo 40 milisegundos de la señal, el proce
 #Compilación
     $ make
 En el path donde se quiera ejecutar
+
     $ make clean
 Para eliminar archivos binarios
