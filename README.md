@@ -25,3 +25,9 @@ csa termina cuando el usuario presiona cualquier tecla.
     Para uniformar el indicador de error, csa aplica una atenuación de igual valor que la ganancia. Así las muestras no saturadas logran aproximar bien a las muestras de la señal original.    
 
 NOTA: Si bien los gráficos muestran solo 40 milisegundos de la señal, el procesamiento es realizado sobre toda la señal (archivo completo).
+
+#Compilación
+    $ make
+En el path donde se quiera ejecutar
+    $ make clean
+Para eliminar archivos binarios
