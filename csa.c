@@ -75,6 +75,10 @@ int main(int argc, char **argv){
 
     if(p==1){       //si es que se pone la bandera P
         pid2 = octave_aplay(pfd, path);
+        waitpid(pid2, &status, 0); //Wait for the child to exit and close the pipe
+        pid2 = octave_aplay(pfd, "amplificado.raw");
+        waitpid(pid2, &status, 0); //Wait for the child to exit and close the pipe
+        pid2 = octave_aplay(pfd, "filtrado.raw");
 
         printf("ENTER para terminar");
         getchar(); 
