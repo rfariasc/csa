@@ -51,7 +51,7 @@ int main(int argc, char *argv[]){
     strcpy(temp,full_name);
     strcpy(filename ,strtok(temp, "."));
     printf("%s\n",filename );
-    //free(temp);
+    free(temp);
 
     pid = octave_aplay(pfd, NULL);
 
