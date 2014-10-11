@@ -82,6 +82,7 @@ int main(int argc, char **argv){
     }else{
         printf("ENTER para terminar");
         getchar(); 
+        
 
         fprintf(sd, "\n exit\n"); fflush(sd);
     }
@@ -91,7 +92,7 @@ int main(int argc, char **argv){
 
     char str[999];
     FILE * tmp;
-    tmp = fopen( "test.tmp" , "r");
+    tmp = fopen( "test.tmp|" , "r");
     if (tmp) {
         while (fscanf(file, "%s", str)!=EOF)
             printf(" el error es:%s",str);
