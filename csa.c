@@ -89,6 +89,15 @@ int main(int argc, char **argv){
     waitpid(pid, &status, 0); //Wait for the child to exit and close the pipe
     fclose(sd);
 
+    char str[999];
+    FILE * tmp;
+    tmp = fopen( "test.tmp" , "r");
+    if (tmp) {
+        while (fscanf(file, "%s", str)!=EOF)
+            printf(" el error es:%s",str);
+    fclose(tmp);
+}
+
     return 0;
 }
 
